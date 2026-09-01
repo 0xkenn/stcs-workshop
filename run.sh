@@ -91,30 +91,33 @@ fi
 if (( ${#setup_reasons[@]} > 0 )); then
     info 'Setup is required:'
     printf '  - %s\n' "${setup_reasons[@]}"
-    exec ./setup.sh
+    ./setup.sh
+else
+    info 'Starting the Sail containers'
+    ./vendor/bin/sail up -d --remove-orphans
+
+    info 'Waiting for PostgreSQL'
+    database_ready=false
+
+    for attempt in {1..30}; do
+        if ./vendor/bin/sail exec -T pgsql pg_isready -q; then
+            database_ready=true
+            break
+        fi
+
+        sleep 1
+    done
+
+    [[ "$database_ready" == true ]] || fail 'PostgreSQL did not become ready within 30 seconds.'
+
+    info 'Clearing cached application configuration'
+    ./vendor/bin/sail artisan config:clear --no-interaction
+
+    info 'Applying pending database migrations'
+    ./vendor/bin/sail artisan migrate --force --no-interaction
 fi
 
-info 'Starting the Sail containers'
-./vendor/bin/sail up -d --remove-orphans
-
-info 'Waiting for PostgreSQL'
-database_ready=false
-
-for attempt in {1..30}; do
-    if ./vendor/bin/sail exec -T pgsql pg_isready -q; then
-        database_ready=true
-        break
-    fi
-
-    sleep 1
-done
-
-[[ "$database_ready" == true ]] || fail 'PostgreSQL did not become ready within 30 seconds.'
-
-info 'Clearing cached application configuration'
-./vendor/bin/sail artisan config:clear --no-interaction
-
-info 'Applying pending database migrations'
-./vendor/bin/sail artisan migrate --force --no-interaction
-
 info 'Application running: http://localhost:8001'
+
+info 'Starting the frontend development server'
+exec ./vendor/bin/sail npm run dev -- --host 0.0.0.0

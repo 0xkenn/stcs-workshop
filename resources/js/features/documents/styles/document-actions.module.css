@@ -1,0 +1,26 @@
+.deleteButton {
+    color: var(--document-danger);
+}
+
+.deleteButton:hover {
+    background: var(--document-danger-soft);
+    color: var(--document-danger-hover);
+}
+
+.hiddenFileInput {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    white-space: nowrap;
+}
+
+.actionError {
+    max-width: 7rem;
+    color: var(--document-danger);
+    font-size: 0.66rem;
+    line-height: 1.25;
+}

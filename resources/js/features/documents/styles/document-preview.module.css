@@ -1,0 +1,112 @@
+.previewDialog {
+    width: min(calc(100vw - 2rem), 56rem);
+    max-width: 56rem;
+    max-height: 92vh;
+}
+
+.filePreview,
+.textPreview,
+.tablePreview {
+    max-height: 65vh;
+    overflow: auto;
+    border: 1px solid var(--document-border-soft);
+    border-radius: 0.85rem;
+    background: var(--document-surface-solid);
+}
+
+.filePreview {
+    display: grid;
+    min-height: 20rem;
+    place-items: center;
+    padding: 1rem;
+}
+
+.filePreview img {
+    display: block;
+    max-width: 100%;
+    max-height: 60vh;
+    border-radius: 0.55rem;
+    object-fit: contain;
+}
+
+.filePreviewFrame {
+    width: 100%;
+    height: min(65vh, 42rem);
+    border: 1px solid var(--document-border-soft);
+    border-radius: 0.85rem;
+    background: var(--document-surface-solid);
+}
+
+.textPreview {
+    display: grid;
+    gap: 1rem;
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+    color: var(--document-text);
+    line-height: 1.75;
+}
+
+.textPreview h2 {
+    color: var(--document-text-strong);
+    font-size: 1.55rem;
+    font-weight: 680;
+    letter-spacing: -0.035em;
+    line-height: 1.2;
+}
+
+.textPreview section {
+    display: grid;
+    gap: 0.6rem;
+    padding: 1rem 1.1rem;
+    border-radius: 0.7rem;
+    background: var(--document-preview-highlight);
+}
+
+.textPreview h3 {
+    color: var(--document-preview-highlight-text);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.textPreview ul {
+    display: grid;
+    gap: 0.35rem;
+    padding-left: 1.2rem;
+}
+
+.tablePreview {
+    padding: 0.5rem 1.25rem 1.25rem;
+}
+
+.tablePreview table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--document-text);
+    font-size: 0.82rem;
+}
+
+.tablePreview caption {
+    padding-block: 1rem;
+    color: var(--document-text-strong);
+    font-size: 1rem;
+    font-weight: 680;
+    text-align: left;
+}
+
+.tablePreview th,
+.tablePreview td {
+    padding: 0.85rem 0.75rem;
+    border-bottom: 1px solid var(--document-border-soft);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.tablePreview th {
+    color: var(--document-text-secondary);
+    background: var(--document-muted-surface);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}

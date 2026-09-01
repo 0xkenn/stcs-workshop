@@ -14,6 +14,7 @@ export default defineConfig({
             refresh: true,
             fonts: [
                 bunny('Instrument Sans', {
+                    optimizedFallbacks: false,
                     weights: [400, 500, 600],
                 }),
             ],
@@ -64,7 +65,17 @@ export default defineConfig({
         singleAttributePerLine: false,
         htmlWhitespaceSensitivity: 'css',
         ignorePatterns: [
+            '.agents/**',
+            '.claude/**',
+            '.cursor/**',
+            '.junie/**',
+            '.mcp.json',
             '.github/**',
+            'AGENTS.md',
+            'CLAUDE.md',
+            'FRONTEND-TEMPLATE.md',
+            'boost.json',
+            'components.json',
             'composer.json',
             'resources/js/components/ui/*',
             'resources/views/mail/*',

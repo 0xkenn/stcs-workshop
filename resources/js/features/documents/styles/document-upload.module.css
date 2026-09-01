@@ -1,0 +1,183 @@
+.uploadCard {
+    --card-spacing: 1.35rem;
+
+    position: sticky;
+    top: 1rem;
+    border: 1px solid rgb(15 23 42 / 7%);
+    background: var(--document-surface);
+    box-shadow: 0 14px 40px rgb(30 41 59 / 5%);
+}
+
+.cardHeadingRow,
+.selectedFile,
+.uploadStatus {
+    display: flex;
+    align-items: center;
+}
+
+.cardHeadingRow {
+    gap: 0.75rem;
+}
+
+.cardIcon,
+.selectedFileIcon,
+.dropZoneIcon {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+}
+
+.cardIcon {
+    width: 2.55rem;
+    height: 2.55rem;
+    border-radius: 0.8rem;
+    background: var(--document-accent-soft);
+    color: var(--document-accent);
+}
+
+.uploadForm {
+    display: grid;
+    gap: 1rem;
+}
+
+.dropZone {
+    display: grid;
+    justify-items: center;
+    gap: 0.9rem;
+    padding: 2rem 1rem 1.25rem;
+    border: 1.5px dashed var(--document-border);
+    border-radius: 0.9rem;
+    background: var(--document-muted-surface-hover);
+    text-align: center;
+    transition:
+        border-color 160ms ease,
+        background-color 160ms ease,
+        transform 160ms ease;
+}
+
+.dropZoneActive {
+    border-color: var(--document-accent);
+    background: var(--document-accent-softer);
+    transform: translateY(-2px);
+}
+
+.dropZoneIcon {
+    width: 3.1rem;
+    height: 3.1rem;
+    border-radius: 999px;
+    background: var(--document-accent-soft);
+    color: var(--document-accent);
+}
+
+.dropZoneCopy {
+    display: grid;
+    gap: 0.25rem;
+}
+
+.dropZoneCopy strong {
+    color: var(--document-text-strong);
+    font-size: 0.88rem;
+}
+
+.dropZoneCopy span,
+.fileRequirements {
+    color: var(--document-text-muted);
+    font-size: 0.74rem;
+}
+
+.fileInput {
+    height: auto;
+    max-width: 16rem;
+    padding: 0.35rem;
+    border: 0;
+    background: transparent;
+    color: transparent;
+    box-shadow: none;
+}
+
+.fileInput::file-selector-button {
+    height: 2rem;
+    padding-inline: 0.85rem;
+    border: 1px solid var(--document-border);
+    border-radius: 0.55rem;
+    background: var(--document-surface-solid);
+    color: var(--document-text);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 620;
+}
+
+.selectedFile {
+    gap: 0.75rem;
+    padding: 0.7rem;
+    border: 1px solid var(--document-border-soft);
+    border-radius: 0.75rem;
+    background: var(--document-surface-solid);
+}
+
+.selectedFileIcon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.55rem;
+    background: var(--document-accent-softer);
+    color: var(--document-accent);
+}
+
+.selectedFileDetails {
+    display: grid;
+    min-width: 0;
+    flex: 1;
+    gap: 0.1rem;
+}
+
+.selectedFileDetails strong {
+    overflow: hidden;
+    color: var(--document-text-strong);
+    font-size: 0.78rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.selectedFileDetails span {
+    color: var(--document-text-muted);
+    font-size: 0.7rem;
+}
+
+.uploadButton {
+    width: 100%;
+    min-height: 2.5rem;
+    background: var(--document-accent);
+    box-shadow: 0 8px 18px rgb(40 85 217 / 18%);
+}
+
+.uploadButton:hover {
+    background: var(--document-accent-hover);
+}
+
+.uploadStatus {
+    min-height: 1.2rem;
+    justify-content: center;
+    gap: 0.35rem;
+    color: var(--document-success);
+    font-size: 0.72rem;
+}
+
+.uploadError {
+    color: var(--document-danger);
+}
+
+@media (max-width: 56rem) {
+    .uploadCard {
+        position: static;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dropZone {
+        transition: none;
+    }
+}
+
+:global(.dark) .uploadCard {
+    border-color: rgb(255 255 255 / 9%);
+}

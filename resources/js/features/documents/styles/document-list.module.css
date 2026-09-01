@@ -1,0 +1,201 @@
+.documentsCard {
+    --card-spacing: 1.35rem;
+
+    border: 1px solid rgb(15 23 42 / 7%);
+    background: var(--document-surface);
+    box-shadow: 0 14px 40px rgb(30 41 59 / 5%);
+}
+
+.listHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.searchField {
+    position: relative;
+    width: min(100%, 14rem);
+}
+
+.searchField > svg {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 0.65rem;
+    color: var(--document-text-subtle);
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
+.searchField input {
+    padding-left: 2rem;
+    background: var(--document-muted-surface);
+}
+
+.documentListContent {
+    padding-inline: 0;
+}
+
+.listLabels,
+.documentRow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 7.5rem 14rem;
+    align-items: center;
+    gap: 1rem;
+}
+
+.listLabels {
+    padding: 0 1.35rem 0.65rem;
+    color: var(--document-text-subtle);
+    font-size: 0.68rem;
+    font-weight: 650;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.documentList {
+    border-top: 1px solid var(--document-border-subtle);
+}
+
+.documentRow {
+    min-height: 4.65rem;
+    padding: 0.85rem 1.35rem;
+    border-bottom: 1px solid var(--document-border-subtle);
+    list-style: none;
+    transition: background-color 150ms ease;
+}
+
+.documentRow:last-child {
+    border-bottom: 0;
+}
+
+.documentRow:hover {
+    background: var(--document-muted-surface-hover);
+}
+
+.documentIdentity {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.documentIcon {
+    display: grid;
+    width: 2.35rem;
+    height: 2.35rem;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 0.7rem;
+    background: #f0f3f8;
+    color: #667085;
+}
+
+.documentIconPDF {
+    background: var(--document-danger-soft);
+    color: #ce4a4a;
+}
+
+.documentIconDOC,
+.documentIconDOCX {
+    background: #eaf0ff;
+    color: #3e61c8;
+}
+
+.documentIconXLS,
+.documentIconXLSX,
+.documentIconCSV {
+    background: #e9f7ef;
+    color: #2d8957;
+}
+
+.documentName {
+    display: grid;
+    min-width: 0;
+    gap: 0.18rem;
+}
+
+.documentName strong {
+    overflow: hidden;
+    color: var(--document-text-strong);
+    font-size: 0.8rem;
+    font-weight: 620;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.documentName span,
+.documentRow time {
+    color: var(--document-text-muted);
+    font-size: 0.71rem;
+}
+
+.documentActions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.35rem;
+}
+
+.emptyState {
+    display: grid;
+    min-height: 15rem;
+    place-items: center;
+    align-content: center;
+    gap: 0.25rem;
+    color: var(--document-text-subtle);
+    text-align: center;
+}
+
+.emptyState strong {
+    margin-top: 0.35rem;
+    color: var(--document-text-strong);
+}
+
+.emptyState span {
+    font-size: 0.78rem;
+}
+
+@media (max-width: 42rem) {
+    .listHeader {
+        display: grid;
+    }
+
+    .searchField {
+        width: 100%;
+    }
+
+    .listLabels {
+        display: none;
+    }
+
+    .documentRow {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.5rem;
+    }
+
+    .documentRow time {
+        display: none;
+    }
+
+    .documentActions {
+        justify-content: flex-start;
+        padding-left: 3.15rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .documentRow {
+        transition: none;
+    }
+}
+
+:global(.dark) .documentsCard {
+    border-color: rgb(255 255 255 / 9%);
+}
+
+:global(.dark) .documentIcon {
+    background: #252c39;
+    color: var(--document-text-secondary);
+}

@@ -2,6 +2,7 @@
 /.setup-complete
 /bootstrap/ssr
 /node_modules
+/.pnpm-store
 /public/build
 /public/fonts-manifest.dev.json
 /public/hot
@@ -27,3 +28,4 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+FRONTEND-TEMPLATE.md
