@@ -14,6 +14,72 @@ fail() {
     exit 1
 }
 
+environment_value() {
+    local key="$1"
+    local fallback="$2"
+    local value=''
+
+    if [[ -f .env ]]; then
+        value="$(grep -E "^${key}=" .env | tail -n 1 | cut -d '=' -f 2- || true)"
+    fi
+
+    if [[ -n "$value" ]]; then
+        printf '%s' "$value"
+    else
+        printf '%s' "$fallback"
+    fi
+}
+
+port_is_listening() {
+    (exec 3<>"/dev/tcp/127.0.0.1/$1") >/dev/null 2>&1 || return 1
+    exec 3<&- 3>&-
+    return 0
+}
+
+running_project_containers() {
+    if [[ -x ./vendor/bin/sail ]]; then
+        ./vendor/bin/sail ps --quiet 2>/dev/null || true
+    else
+        docker compose ps --quiet 2>/dev/null || true
+    fi
+}
+
+require_available_host_ports() {
+    if [[ -n "$(running_project_containers)" ]]; then
+        return 0
+    fi
+
+    local port_definitions=(
+        "APP_PORT:$(environment_value APP_PORT 8001)"
+        "VITE_PORT:$(environment_value VITE_PORT 5173)"
+        "FORWARD_DB_PORT:$(environment_value FORWARD_DB_PORT 5433)"
+    )
+    local port_conflicts=()
+
+    for port_definition in "${port_definitions[@]}"; do
+        if port_is_listening "${port_definition##*:}"; then
+            port_conflicts+=("${port_definition%%:*}=${port_definition##*:} is already used by another process")
+        fi
+    done
+
+    if (( ${#port_conflicts[@]} > 0 )); then
+        printf '\n\033[1;31mHost port conflict:\033[0m\n' >&2
+        printf '  - %s\n' "${port_conflicts[@]}" >&2
+        fail 'Set a free port for those keys in .env (for example FORWARD_DB_PORT=5434) and run this script again.'
+    fi
+}
+
+set_environment_default() {
+    local key="$1"
+    local value="$2"
+
+    if grep -Eq "^${key}=.+$" .env; then
+        return 0
+    fi
+
+    set_environment_value "$key" "$value"
+}
+
 set_environment_value() {
     local key="$1"
     local value="$2"
@@ -49,14 +115,18 @@ if [[ ! -f .env ]]; then
 fi
 
 info 'Configuring the local Sail environment'
-set_environment_value APP_URL http://localhost:8001
-set_environment_value APP_PORT 8001
+set_environment_default APP_PORT 8001
+set_environment_default VITE_PORT 5173
+set_environment_default FORWARD_DB_PORT 5433
+set_environment_value APP_URL "http://localhost:$(environment_value APP_PORT 8001)"
 set_environment_value DB_CONNECTION pgsql
 set_environment_value DB_HOST pgsql
 set_environment_value DB_PORT 5432
 set_environment_value DB_DATABASE laravel
 set_environment_value DB_USERNAME sail
 set_environment_value DB_PASSWORD password
+
+require_available_host_ports
 
 info 'Bootstrapping PHP dependencies'
 docker run --rm \
@@ -110,4 +180,4 @@ info 'Building frontend assets'
 
 touch .setup-complete
 
-info 'Setup complete: http://localhost:8001'
+info "Setup complete: http://localhost:$(environment_value APP_PORT 8001)"

@@ -14,6 +14,65 @@ fail() {
     exit 1
 }
 
+environment_value() {
+    local key="$1"
+    local fallback="$2"
+    local value=''
+
+    if [[ -f .env ]]; then
+        value="$(grep -E "^${key}=" .env | tail -n 1 | cut -d '=' -f 2- || true)"
+    fi
+
+    if [[ -n "$value" ]]; then
+        printf '%s' "$value"
+    else
+        printf '%s' "$fallback"
+    fi
+}
+
+port_is_listening() {
+    (exec 3<>"/dev/tcp/127.0.0.1/$1") >/dev/null 2>&1 || return 1
+    exec 3<&- 3>&-
+    return 0
+}
+
+running_project_containers() {
+    if [[ -x ./vendor/bin/sail ]]; then
+        ./vendor/bin/sail ps --quiet 2>/dev/null || true
+    else
+        docker compose ps --quiet 2>/dev/null || true
+    fi
+}
+
+require_available_host_ports() {
+    if [[ ! -f .env ]]; then
+        return 0
+    fi
+
+    if [[ -n "$(running_project_containers)" ]]; then
+        return 0
+    fi
+
+    local port_definitions=(
+        "APP_PORT:$(environment_value APP_PORT 8001)"
+        "VITE_PORT:$(environment_value VITE_PORT 5173)"
+        "FORWARD_DB_PORT:$(environment_value FORWARD_DB_PORT 5433)"
+    )
+    local port_conflicts=()
+
+    for port_definition in "${port_definitions[@]}"; do
+        if port_is_listening "${port_definition##*:}"; then
+            port_conflicts+=("${port_definition%%:*}=${port_definition##*:} is already used by another process")
+        fi
+    done
+
+    if (( ${#port_conflicts[@]} > 0 )); then
+        printf '\n\033[1;31mHost port conflict:\033[0m\n' >&2
+        printf '  - %s\n' "${port_conflicts[@]}" >&2
+        fail 'Set a free port for those keys in .env (for example FORWARD_DB_PORT=5434) and run this script again.'
+    fi
+}
+
 setup_reasons=()
 
 require_setup() {
@@ -33,8 +92,6 @@ if [[ ! -f .env ]]; then
     require_setup '.env is missing'
 else
     required_environment_values=(
-        'APP_URL=http://localhost:8001'
-        'APP_PORT=8001'
         'DB_CONNECTION=pgsql'
         'DB_HOST=pgsql'
         'DB_PORT=5432'
@@ -48,6 +105,22 @@ else
             require_setup ".env value for ${required_environment_value%%=*} is not configured"
         fi
     done
+
+    required_environment_keys=(
+        'APP_PORT'
+        'VITE_PORT'
+        'FORWARD_DB_PORT'
+    )
+
+    for required_environment_key in "${required_environment_keys[@]}"; do
+        if ! grep -Eq "^${required_environment_key}=.+$" .env; then
+            require_setup ".env value for ${required_environment_key} is not configured"
+        fi
+    done
+
+    if ! grep -Fqx "APP_URL=http://localhost:$(environment_value APP_PORT 8001)" .env; then
+        require_setup 'APP_URL does not match APP_PORT'
+    fi
 
     if ! grep -Eq '^APP_KEY=.+$' .env; then
         require_setup 'APP_KEY has not been generated'
@@ -88,6 +161,8 @@ if [[ -x ./vendor/bin/sail ]] && ! docker image inspect sail-8.5/app >/dev/null 
     require_setup 'the Sail application image is missing'
 fi
 
+require_available_host_ports
+
 if (( ${#setup_reasons[@]} > 0 )); then
     info 'Setup is required:'
     printf '  - %s\n' "${setup_reasons[@]}"
@@ -117,7 +192,7 @@ else
     ./vendor/bin/sail artisan migrate --force --no-interaction
 fi
 
-info 'Application running: http://localhost:8001'
+info "Application running: http://localhost:$(environment_value APP_PORT 8001)"
 
 info 'Starting the frontend development server'
 exec ./vendor/bin/sail npm run dev -- --host 0.0.0.0
