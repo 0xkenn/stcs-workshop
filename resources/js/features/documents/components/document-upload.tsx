@@ -24,7 +24,7 @@ import { formatFileSize } from '@/features/documents/formatters';
 import styles from '@/features/documents/styles/document-upload.module.css';
 
 type DocumentUploadProps = {
-    onUpload: (file: File) => Promise<void>;
+    onUpload?: (file: File) => Promise<void>;
 };
 
 export function DocumentUpload({ onUpload }: DocumentUploadProps) {
@@ -84,7 +84,7 @@ export function DocumentUpload({ onUpload }: DocumentUploadProps) {
     ): Promise<void> {
         event.preventDefault();
 
-        if (!selectedFile) {
+        if (!selectedFile || !onUpload) {
             return;
         }
 

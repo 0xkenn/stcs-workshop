@@ -8,14 +8,9 @@ import '@/features/documents/styles/document-theme.module.css';
 import styles from '@/features/documents/styles/document-page.module.css';
 
 export default function DocumentManagementPage() {
-    const {
-        deleteDocument,
-        replaceDocument,
-        searchQuery,
-        setSearchQuery,
-        uploadDocument,
-        visibleDocuments,
-    } = useDocuments();
+    const { searchQuery, setSearchQuery, visibleDocuments } = useDocuments();
+
+    // Supply onUpload, onReplace, and onDelete when the API is ready.
 
     return (
         <>
@@ -46,12 +41,10 @@ export default function DocumentManagementPage() {
                     </section>
 
                     <section className={styles.workspaceGrid}>
-                        <DocumentUpload onUpload={uploadDocument} />
+                        <DocumentUpload />
                         <DocumentList
                             documents={visibleDocuments}
                             searchQuery={searchQuery}
-                            onDelete={deleteDocument}
-                            onReplace={replaceDocument}
                             onSearchChange={setSearchQuery}
                         />
                     </section>

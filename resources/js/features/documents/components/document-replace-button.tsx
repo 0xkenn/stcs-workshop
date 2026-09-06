@@ -12,7 +12,7 @@ import type { DocumentRecord } from '@/features/documents/types';
 
 type DocumentReplaceButtonProps = {
     document: DocumentRecord;
-    onReplace: (documentId: string, file: File) => Promise<void>;
+    onReplace?: (documentId: string, file: File) => Promise<void>;
 };
 
 export function DocumentReplaceButton({
@@ -28,7 +28,7 @@ export function DocumentReplaceButton({
     ): Promise<void> {
         const file = event.target.files?.[0];
 
-        if (!file) {
+        if (!file || !onReplace) {
             return;
         }
 
@@ -71,7 +71,9 @@ export function DocumentReplaceButton({
                 size="sm"
                 disabled={isReplacing}
                 aria-busy={isReplacing}
-                onClick={() => fileInputRef.current?.click()}
+                onClick={
+                    onReplace ? () => fileInputRef.current?.click() : undefined
+                }
             >
                 <RefreshCw data-icon="inline-start" />
                 {isReplacing ? 'Reading…' : 'Re-upload'}

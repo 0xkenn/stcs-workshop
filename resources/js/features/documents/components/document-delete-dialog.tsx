@@ -18,13 +18,27 @@ import type { DocumentRecord } from '@/features/documents/types';
 
 type DocumentDeleteDialogProps = {
     document: DocumentRecord;
-    onDelete: (documentId: string) => void;
+    onDelete?: (documentId: string) => void;
 };
 
 export function DocumentDeleteDialog({
     document,
     onDelete,
 }: DocumentDeleteDialogProps) {
+    if (!onDelete) {
+        return (
+            <Button
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                className={styles.deleteButton}
+            >
+                <Trash2 />
+                <span className="sr-only">Delete {document.name}</span>
+            </Button>
+        );
+    }
+
     return (
         <AlertDialog>
             <AlertDialogTrigger

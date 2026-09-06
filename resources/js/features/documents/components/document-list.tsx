@@ -21,8 +21,8 @@ import type { DocumentRecord } from '@/features/documents/types';
 type DocumentListProps = {
     documents: DocumentRecord[];
     searchQuery: string;
-    onDelete: (documentId: string) => void;
-    onReplace: (documentId: string, file: File) => Promise<void>;
+    onDelete?: (documentId: string) => void;
+    onReplace?: (documentId: string, file: File) => Promise<void>;
     onSearchChange: (query: string) => void;
 };
 
@@ -90,8 +90,8 @@ export function DocumentList({
 
 type DocumentListItemProps = {
     document: DocumentRecord;
-    onDelete: (documentId: string) => void;
-    onReplace: (documentId: string, file: File) => Promise<void>;
+    onDelete?: (documentId: string) => void;
+    onReplace?: (documentId: string, file: File) => Promise<void>;
 };
 
 export function DocumentListItem({
