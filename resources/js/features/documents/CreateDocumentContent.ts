@@ -1,4 +1,4 @@
-import type { DocumentContent } from '@/features/documents/types';
+import type { DocumentContent } from '@/features/documents/Types';
 
 // Keep local file parsing disconnected from the template.
 // Use the backend preview response when connecting the View button.

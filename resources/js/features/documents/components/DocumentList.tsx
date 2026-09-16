@@ -1,4 +1,4 @@
-import { File, FileSpreadsheet, FileText, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 import {
     Card,
@@ -6,17 +6,11 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { DocumentDeleteDialog } from '@/features/documents/components/document-delete-dialog';
-import { DocumentPreviewDialog } from '@/features/documents/components/document-preview-dialog';
-import { DocumentReplaceButton } from '@/features/documents/components/document-replace-button';
-import {
-    formatFileSize,
-    formatUploadDate,
-} from '@/features/documents/formatters';
-import styles from '@/features/documents/styles/document-list.module.css';
-import type { DocumentRecord } from '@/features/documents/types';
+} from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
+import { DocumentListItem } from '@/features/documents/components/DocumentListItem';
+import styles from '@/features/documents/styles/DocumentList.module.css';
+import type { DocumentRecord } from '@/features/documents/Types';
 
 type DocumentListProps = {
     documents: DocumentRecord[];
@@ -74,53 +68,4 @@ export function DocumentList({ documents }: DocumentListProps) {
             </CardContent>
         </Card>
     );
-}
-
-type DocumentListItemProps = {
-    document: DocumentRecord;
-};
-
-export function DocumentListItem({ document }: DocumentListItemProps) {
-    const DocumentIcon = getDocumentIcon(document.extension);
-
-    return (
-        <li className={styles.documentRow}>
-            <div className={styles.documentIdentity}>
-                <div
-                    className={`${styles.documentIcon} ${styles[`documentIcon${document.extension}`] ?? ''}`}
-                >
-                    <DocumentIcon size={19} aria-hidden="true" />
-                </div>
-                <div className={styles.documentName}>
-                    <strong>{document.name}</strong>
-                    <span>
-                        {document.extension} ·{' '}
-                        {formatFileSize(document.sizeInBytes)}
-                    </span>
-                </div>
-            </div>
-
-            <time dateTime={document.uploadedAt}>
-                {formatUploadDate(document.uploadedAt)}
-            </time>
-
-            <div className={styles.documentActions}>
-                <DocumentPreviewDialog document={document} />
-                <DocumentReplaceButton />
-                <DocumentDeleteDialog document={document} />
-            </div>
-        </li>
-    );
-}
-
-function getDocumentIcon(extension: string) {
-    if (['XLS', 'XLSX', 'CSV'].includes(extension)) {
-        return FileSpreadsheet;
-    }
-
-    if (['PDF', 'DOC', 'DOCX', 'TXT'].includes(extension)) {
-        return FileText;
-    }
-
-    return File;
 }

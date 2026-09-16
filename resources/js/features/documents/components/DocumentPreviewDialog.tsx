@@ -1,6 +1,6 @@
 import { Eye } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
     Dialog,
     DialogContent,
@@ -9,13 +9,13 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@/components/ui/Dialog';
 import {
     formatFileSize,
     formatUploadDate,
-} from '@/features/documents/formatters';
-import styles from '@/features/documents/styles/document-preview.module.css';
-import type { DocumentRecord } from '@/features/documents/types';
+} from '@/features/documents/Formatters';
+import styles from '@/features/documents/styles/DocumentPreviewDialog.module.css';
+import type { DocumentRecord } from '@/features/documents/Types';
 
 type DocumentPreviewDialogProps = {
     document: DocumentRecord;

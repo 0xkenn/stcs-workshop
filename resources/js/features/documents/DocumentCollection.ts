@@ -1,4 +1,4 @@
-import type { DocumentRecord } from '@/features/documents/types';
+import type { DocumentRecord } from '@/features/documents/Types';
 
 // Keep these helpers disconnected from the template.
 // Use backend results to update the list when document actions are implemented.

@@ -11,10 +11,10 @@ import {
     AlertDialogMedia,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
-import styles from '@/features/documents/styles/document-actions.module.css';
-import type { DocumentRecord } from '@/features/documents/types';
+} from '@/components/ui/AlertDialog';
+import { Button } from '@/components/ui/Button';
+import styles from '@/features/documents/styles/DocumentActions.module.css';
+import type { DocumentRecord } from '@/features/documents/Types';
 
 type DocumentDeleteDialogProps = {
     document: DocumentRecord;

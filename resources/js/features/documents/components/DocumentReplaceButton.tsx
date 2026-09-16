@@ -1,6 +1,6 @@
 import { RefreshCw } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 export function DocumentReplaceButton() {
     // Accept the document ID and add a file picker for its replacement.

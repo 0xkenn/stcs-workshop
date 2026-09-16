@@ -1,15 +1,15 @@
 import { UploadCloud } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import styles from '@/features/documents/styles/document-upload.module.css';
+} from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
+import styles from '@/features/documents/styles/DocumentUpload.module.css';
 
 export function DocumentUpload() {
     // Replace the uploadForm div with an Inertia Form using the Wayfinder upload route.

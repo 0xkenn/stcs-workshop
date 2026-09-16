@@ -1,11 +1,11 @@
 import { Head } from '@inertiajs/react';
 import { Files } from 'lucide-react';
 
-import { DocumentList } from '@/features/documents/components/document-list';
-import { DocumentUpload } from '@/features/documents/components/document-upload';
-import { staticDocuments } from '@/features/documents/data/static-documents';
-import '@/features/documents/styles/document-theme.module.css';
-import styles from '@/features/documents/styles/document-page.module.css';
+import { DocumentList } from '@/features/documents/components/DocumentList';
+import { DocumentUpload } from '@/features/documents/components/DocumentUpload';
+import { staticDocuments } from '@/features/documents/data/StaticDocuments';
+import '@/features/documents/styles/DocumentTheme.module.css';
+import styles from '@/features/documents/styles/DocumentManagementPage.module.css';
 
 export default function DocumentManagementPage() {
     // Keep master as a template. Leave document actions disabled.

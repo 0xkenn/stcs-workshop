@@ -1,4 +1,4 @@
-import type { DocumentRecord } from '@/features/documents/types';
+import type { DocumentRecord } from '@/features/documents/Types';
 
 // Use these records to preview the layout only.
 // Replace them with Inertia page props when the document list endpoint is ready.
