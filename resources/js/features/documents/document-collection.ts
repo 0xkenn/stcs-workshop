@@ -1,5 +1,7 @@
 import type { DocumentRecord } from '@/features/documents/types';
 
+// Keep these helpers disconnected from the template.
+// Use backend results to update the list when document actions are implemented.
 export function filterDocuments(
     documents: DocumentRecord[],
     searchQuery: string,

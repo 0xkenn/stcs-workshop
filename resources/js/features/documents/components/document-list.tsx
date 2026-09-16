@@ -20,19 +20,9 @@ import type { DocumentRecord } from '@/features/documents/types';
 
 type DocumentListProps = {
     documents: DocumentRecord[];
-    searchQuery: string;
-    onDelete?: (documentId: string) => void;
-    onReplace?: (documentId: string, file: File) => Promise<void>;
-    onSearchChange: (query: string) => void;
 };
 
-export function DocumentList({
-    documents,
-    searchQuery,
-    onDelete,
-    onReplace,
-    onSearchChange,
-}: DocumentListProps) {
+export function DocumentList({ documents }: DocumentListProps) {
     return (
         <Card className={styles.documentsCard}>
             <CardHeader>
@@ -40,19 +30,19 @@ export function DocumentList({
                     <div>
                         <CardTitle>Documents</CardTitle>
                         <CardDescription>
-                            Search, view, replace, or delete a document.
+                            Sample rows for the document list layout.
                         </CardDescription>
                     </div>
                     <div className={styles.searchField}>
                         <Search size={16} aria-hidden="true" />
+                        {/* Send the search query to the list route using Wayfinder.
+                            Display the filtered results and pagination from Inertia props.
+                            Add loading and empty states when search is connected. */}
                         <Input
                             type="search"
-                            value={searchQuery}
                             aria-label="Search documents"
                             placeholder="Search documents"
-                            onChange={(event) =>
-                                onSearchChange(event.target.value)
-                            }
+                            disabled
                         />
                     </div>
                 </div>
@@ -71,8 +61,6 @@ export function DocumentList({
                             <DocumentListItem
                                 key={document.id}
                                 document={document}
-                                onDelete={onDelete}
-                                onReplace={onReplace}
                             />
                         ))}
                     </ul>
@@ -90,15 +78,9 @@ export function DocumentList({
 
 type DocumentListItemProps = {
     document: DocumentRecord;
-    onDelete?: (documentId: string) => void;
-    onReplace?: (documentId: string, file: File) => Promise<void>;
 };
 
-export function DocumentListItem({
-    document,
-    onDelete,
-    onReplace,
-}: DocumentListItemProps) {
+export function DocumentListItem({ document }: DocumentListItemProps) {
     const DocumentIcon = getDocumentIcon(document.extension);
 
     return (
@@ -124,11 +106,8 @@ export function DocumentListItem({
 
             <div className={styles.documentActions}>
                 <DocumentPreviewDialog document={document} />
-                <DocumentReplaceButton
-                    document={document}
-                    onReplace={onReplace}
-                />
-                <DocumentDeleteDialog document={document} onDelete={onDelete} />
+                <DocumentReplaceButton />
+                <DocumentDeleteDialog document={document} />
             </div>
         </li>
     );

@@ -18,30 +18,17 @@ import type { DocumentRecord } from '@/features/documents/types';
 
 type DocumentDeleteDialogProps = {
     document: DocumentRecord;
-    onDelete?: (documentId: string) => void;
 };
 
-export function DocumentDeleteDialog({
-    document,
-    onDelete,
-}: DocumentDeleteDialogProps) {
-    if (!onDelete) {
-        return (
-            <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                className={styles.deleteButton}
-            >
-                <Trash2 />
-                <span className="sr-only">Delete {document.name}</span>
-            </Button>
-        );
-    }
-
+export function DocumentDeleteDialog({ document }: DocumentDeleteDialogProps) {
+    // Enable Delete when the backend route is ready and the user has permission.
+    // Send the document ID to the Wayfinder DELETE route after confirmation.
+    // Disable confirmation while deleting and show any errors in the dialog.
+    // Close the dialog and refresh the list after the request succeeds.
     return (
         <AlertDialog>
             <AlertDialogTrigger
+                disabled
                 render={
                     <Button
                         variant="ghost"
@@ -66,10 +53,7 @@ export function DocumentDeleteDialog({
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                        variant="destructive"
-                        onClick={() => onDelete(document.id)}
-                    >
+                    <AlertDialogAction variant="destructive" disabled>
                         Delete document
                     </AlertDialogAction>
                 </AlertDialogFooter>

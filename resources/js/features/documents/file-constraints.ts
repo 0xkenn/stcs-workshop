@@ -1,3 +1,5 @@
+// Check these example limits against the backend rules before enabling uploads.
+// Keep validation on the server even if these helpers are used in the browser.
 const acceptedDocumentExtensions = [
     'pdf',
     'docx',

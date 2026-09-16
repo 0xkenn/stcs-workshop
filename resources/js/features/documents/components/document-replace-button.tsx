@@ -1,88 +1,16 @@
-import { type ChangeEvent, useRef, useState } from 'react';
 import { RefreshCw } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import {
-    acceptedDocumentFileTypes,
-    getDocumentFileValidationError,
-} from '@/features/documents/file-constraints';
-import styles from '@/features/documents/styles/document-actions.module.css';
-import type { DocumentRecord } from '@/features/documents/types';
 
-type DocumentReplaceButtonProps = {
-    document: DocumentRecord;
-    onReplace?: (documentId: string, file: File) => Promise<void>;
-};
-
-export function DocumentReplaceButton({
-    document,
-    onReplace,
-}: DocumentReplaceButtonProps) {
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const [isReplacing, setIsReplacing] = useState(false);
-    const [replaceError, setReplaceError] = useState<string | null>(null);
-
-    async function handleFileChange(
-        event: ChangeEvent<HTMLInputElement>,
-    ): Promise<void> {
-        const file = event.target.files?.[0];
-
-        if (!file || !onReplace) {
-            return;
-        }
-
-        const validationError = getDocumentFileValidationError(file);
-
-        if (validationError) {
-            setReplaceError(validationError);
-            event.target.value = '';
-
-            return;
-        }
-
-        setIsReplacing(true);
-        setReplaceError(null);
-
-        try {
-            await onReplace(document.id, file);
-        } catch {
-            setReplaceError('The replacement file could not be read.');
-        } finally {
-            setIsReplacing(false);
-            event.target.value = '';
-        }
-    }
-
+export function DocumentReplaceButton() {
+    // Accept the document ID and add a file picker for its replacement.
+    // Submit the file through an Inertia form using the Wayfinder replacement route.
+    // Show validation errors and disable the button while saving.
+    // Refresh the row after success. Keep the original document if the request fails.
     return (
-        <>
-            <Input
-                ref={fileInputRef}
-                className={styles.hiddenFileInput}
-                type="file"
-                tabIndex={-1}
-                accept={acceptedDocumentFileTypes}
-                aria-hidden="true"
-                onChange={handleFileChange}
-            />
-            <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={isReplacing}
-                aria-busy={isReplacing}
-                onClick={
-                    onReplace ? () => fileInputRef.current?.click() : undefined
-                }
-            >
-                <RefreshCw data-icon="inline-start" />
-                {isReplacing ? 'Reading…' : 'Re-upload'}
-            </Button>
-            {replaceError && (
-                <span className={styles.actionError} role="alert">
-                    {replaceError}
-                </span>
-            )}
-        </>
+        <Button type="button" variant="outline" size="sm" disabled>
+            <RefreshCw data-icon="inline-start" />
+            Re-upload
+        </Button>
     );
 }

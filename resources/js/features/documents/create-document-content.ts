@@ -1,5 +1,7 @@
 import type { DocumentContent } from '@/features/documents/types';
 
+// Keep local file parsing disconnected from the template.
+// Use the backend preview response when connecting the View button.
 export async function createDocumentContent(
     file: File,
 ): Promise<DocumentContent> {

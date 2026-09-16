@@ -15,10 +15,7 @@ import {
     formatUploadDate,
 } from '@/features/documents/formatters';
 import styles from '@/features/documents/styles/document-preview.module.css';
-import type {
-    DocumentContent,
-    DocumentRecord,
-} from '@/features/documents/types';
+import type { DocumentRecord } from '@/features/documents/types';
 
 type DocumentPreviewDialogProps = {
     document: DocumentRecord;
@@ -27,9 +24,15 @@ type DocumentPreviewDialogProps = {
 export function DocumentPreviewDialog({
     document,
 }: DocumentPreviewDialogProps) {
+    // Enable View when the backend preview route is ready and the user has access.
+    // Load the preview through Wayfinder when the dialog opens.
+    // Show loading, unsupported-file, and error states inside the dialog.
     return (
         <Dialog>
-            <DialogTrigger render={<Button variant="ghost" size="sm" />}>
+            <DialogTrigger
+                disabled
+                render={<Button variant="ghost" size="sm" />}
+            >
                 <Eye data-icon="inline-start" />
                 View
             </DialogTrigger>
@@ -43,88 +46,11 @@ export function DocumentPreviewDialog({
                     </DialogDescription>
                 </DialogHeader>
 
-                <DocumentContentPreview
-                    content={document.content}
-                    documentName={document.name}
-                />
+                {/* Display the content or preview URL returned by the backend here. */}
+                <p>Document preview placeholder.</p>
 
                 <DialogFooter showCloseButton />
             </DialogContent>
         </Dialog>
-    );
-}
-
-type DocumentContentPreviewProps = {
-    content: DocumentContent;
-    documentName: string;
-};
-
-function DocumentContentPreview({
-    content,
-    documentName,
-}: DocumentContentPreviewProps) {
-    if (content.kind === 'file') {
-        if (content.mimeType.startsWith('image/')) {
-            return (
-                <div className={styles.filePreview}>
-                    <img src={content.url} alt={`Preview of ${documentName}`} />
-                </div>
-            );
-        }
-
-        return (
-            <iframe
-                className={styles.filePreviewFrame}
-                src={content.url}
-                title={`Preview of ${documentName}`}
-            />
-        );
-    }
-
-    if (content.kind === 'table') {
-        return (
-            <div className={styles.tablePreview}>
-                <table>
-                    <caption>{content.caption}</caption>
-                    <thead>
-                        <tr>
-                            {content.columns.map((column) => (
-                                <th key={column} scope="col">
-                                    {column}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {content.rows.map((row) => (
-                            <tr key={row.join('-')}>
-                                {row.map((cell, index) => (
-                                    <td key={`${index}-${cell}`}>{cell}</td>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        );
-    }
-
-    return (
-        <article className={styles.textPreview}>
-            <h2>{content.heading}</h2>
-            {content.paragraphs.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-            ))}
-            {content.highlights && (
-                <section>
-                    <h3>Highlights</h3>
-                    <ul>
-                        {content.highlights.map((highlight) => (
-                            <li key={highlight}>{highlight}</li>
-                        ))}
-                    </ul>
-                </section>
-            )}
-        </article>
     );
 }

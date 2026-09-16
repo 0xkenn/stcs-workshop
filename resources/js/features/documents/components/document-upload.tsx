@@ -1,11 +1,4 @@
-import {
-    type ChangeEvent,
-    type DragEvent,
-    type FormEvent,
-    useRef,
-    useState,
-} from 'react';
-import { CheckCircle2, FileText, UploadCloud, X } from 'lucide-react';
+import { UploadCloud } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,94 +9,12 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import {
-    acceptedDocumentFileTypes,
-    getDocumentFileValidationError,
-} from '@/features/documents/file-constraints';
-import { formatFileSize } from '@/features/documents/formatters';
 import styles from '@/features/documents/styles/document-upload.module.css';
 
-type DocumentUploadProps = {
-    onUpload?: (file: File) => Promise<void>;
-};
-
-export function DocumentUpload({ onUpload }: DocumentUploadProps) {
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [isDragging, setIsDragging] = useState(false);
-    const [isUploading, setIsUploading] = useState(false);
-    const [uploadError, setUploadError] = useState<string | null>(null);
-    const [uploadedFileName, setUploadedFileName] = useState<string | null>(
-        null,
-    );
-
-    function selectFile(file?: File): void {
-        if (!file) {
-            return;
-        }
-
-        const validationError = getDocumentFileValidationError(file);
-
-        if (validationError) {
-            setSelectedFile(null);
-            setUploadedFileName(null);
-            setUploadError(validationError);
-
-            if (fileInputRef.current) {
-                fileInputRef.current.value = '';
-            }
-
-            return;
-        }
-
-        setSelectedFile(file);
-        setUploadedFileName(null);
-        setUploadError(null);
-    }
-
-    function handleFileChange(event: ChangeEvent<HTMLInputElement>): void {
-        selectFile(event.target.files?.[0]);
-    }
-
-    function handleDrop(event: DragEvent<HTMLDivElement>): void {
-        event.preventDefault();
-        setIsDragging(false);
-        selectFile(event.dataTransfer.files[0]);
-    }
-
-    function clearSelectedFile(): void {
-        setSelectedFile(null);
-
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-    }
-
-    async function handleSubmit(
-        event: FormEvent<HTMLFormElement>,
-    ): Promise<void> {
-        event.preventDefault();
-
-        if (!selectedFile || !onUpload) {
-            return;
-        }
-
-        setIsUploading(true);
-        setUploadError(null);
-
-        try {
-            await onUpload(selectedFile);
-            setUploadedFileName(selectedFile.name);
-            clearSelectedFile();
-        } catch {
-            setUploadError(
-                'The document could not be read. Check the file and try again.',
-            );
-        } finally {
-            setIsUploading(false);
-        }
-    }
-
+export function DocumentUpload() {
+    // Replace the uploadForm div with an Inertia Form using the Wayfinder upload route.
+    // Add file selection and drag-and-drop when that route is ready.
+    // Match the accepted file types and size limit to the backend validation rules.
     return (
         <Card className={styles.uploadCard}>
             <CardHeader>
@@ -114,94 +25,54 @@ export function DocumentUpload({ onUpload }: DocumentUploadProps) {
                     <div>
                         <CardTitle>Upload a document</CardTitle>
                         <CardDescription>
-                            Add a file to your shared workspace.
+                            File uploads are unavailable in this template.
                         </CardDescription>
                     </div>
                 </div>
             </CardHeader>
 
             <CardContent>
-                <form className={styles.uploadForm} onSubmit={handleSubmit}>
-                    <div
-                        className={`${styles.dropZone} ${isDragging ? styles.dropZoneActive : ''}`}
-                        onDragEnter={(event) => {
-                            event.preventDefault();
-                            setIsDragging(true);
-                        }}
-                        onDragLeave={() => setIsDragging(false)}
-                        onDragOver={(event) => event.preventDefault()}
-                        onDrop={handleDrop}
-                    >
+                <div className={styles.uploadForm}>
+                    <div className={styles.dropZone}>
                         <div className={styles.dropZoneIcon} aria-hidden="true">
                             <UploadCloud size={26} strokeWidth={1.75} />
                         </div>
                         <div className={styles.dropZoneCopy}>
-                            <strong>Drop your file here</strong>
-                            <span>or choose a file from your computer</span>
+                            <strong>File upload area</strong>
+                            <span>
+                                File selection and dropping are disabled
+                            </span>
                         </div>
                         <Input
-                            ref={fileInputRef}
                             className={styles.fileInput}
                             type="file"
-                            accept={acceptedDocumentFileTypes}
+                            aria-label="Choose a document"
                             aria-describedby="file-requirements"
-                            onChange={handleFileChange}
+                            disabled
                         />
                         <span
                             id="file-requirements"
                             className={styles.fileRequirements}
                         >
-                            PDF, DOCX, text, PNG, or JPG files up to 25 MB
+                            File types and size limits will be shown here.
                         </span>
                     </div>
 
-                    {selectedFile && (
-                        <div className={styles.selectedFile}>
-                            <div className={styles.selectedFileIcon}>
-                                <FileText size={18} aria-hidden="true" />
-                            </div>
-                            <div className={styles.selectedFileDetails}>
-                                <strong>{selectedFile.name}</strong>
-                                <span>{formatFileSize(selectedFile.size)}</span>
-                            </div>
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon-sm"
-                                aria-label={`Remove ${selectedFile.name}`}
-                                onClick={clearSelectedFile}
-                            >
-                                <X aria-hidden="true" />
-                            </Button>
-                        </div>
-                    )}
-
+                    {/* Show the selected file name, size, and a remove button here. */}
                     <Button
                         className={styles.uploadButton}
-                        type="submit"
+                        type="button"
                         size="lg"
-                        disabled={!selectedFile || isUploading}
-                        aria-busy={isUploading}
+                        disabled
                     >
                         <UploadCloud data-icon="inline-start" />
-                        {isUploading ? 'Reading document…' : 'Upload document'}
+                        Upload document
                     </Button>
 
-                    <div className={styles.uploadStatus} aria-live="polite">
-                        {uploadError ? (
-                            <span className={styles.uploadError}>
-                                {uploadError}
-                            </span>
-                        ) : uploadedFileName ? (
-                            <>
-                                <CheckCircle2 size={16} aria-hidden="true" />
-                                <span>
-                                    {uploadedFileName} was added successfully.
-                                </span>
-                            </>
-                        ) : null}
-                    </div>
-                </form>
+                    {/* Show upload progress and validation errors here.
+                        Clear the picker and show success after the file is saved. */}
+                    <div className={styles.uploadStatus} aria-live="polite" />
+                </div>
             </CardContent>
         </Card>
     );
