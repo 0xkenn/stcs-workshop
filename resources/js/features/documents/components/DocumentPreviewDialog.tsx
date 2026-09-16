@@ -41,7 +41,7 @@ export function DocumentPreviewDialog({
                     <DialogTitle>{document.name}</DialogTitle>
                     <DialogDescription>
                         {document.extension} ·{' '}
-                        {formatFileSize(document.sizeInBytes)} · Updated{' '}
+                        {formatFileSize(document.sizeInBytes)} · Uploaded{' '}
                         {formatUploadDate(document.uploadedAt)}
                     </DialogDescription>
                 </DialogHeader>

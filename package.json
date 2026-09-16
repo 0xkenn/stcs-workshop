@@ -24,7 +24,6 @@
         "concurrently": "^10.0.3",
         "laravel-vite-plugin": "^3.1",
         "lucide-react": "^1.38.0",
-        "mammoth": "^1.12.2",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
         "shadcn": "^4.19.1",

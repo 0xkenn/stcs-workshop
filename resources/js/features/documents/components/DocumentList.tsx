@@ -45,7 +45,7 @@ export function DocumentList({ documents }: DocumentListProps) {
             <CardContent className={styles.documentListContent}>
                 <div className={styles.listLabels} aria-hidden="true">
                     <span>Document</span>
-                    <span>Updated</span>
+                    <span>Uploaded</span>
                     <span>Actions</span>
                 </div>
 

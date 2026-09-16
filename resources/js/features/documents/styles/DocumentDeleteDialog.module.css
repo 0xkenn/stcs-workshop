@@ -1,0 +1,8 @@
+.deleteButton {
+    color: var(--document-danger);
+}
+
+.deleteButton:hover {
+    background: var(--document-danger-soft);
+    color: var(--document-danger-hover);
+}

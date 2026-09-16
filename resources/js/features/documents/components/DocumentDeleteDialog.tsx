@@ -13,7 +13,7 @@ import {
     AlertDialogTrigger,
 } from '@/components/ui/AlertDialog';
 import { Button } from '@/components/ui/Button';
-import styles from '@/features/documents/styles/DocumentActions.module.css';
+import styles from '@/features/documents/styles/DocumentDeleteDialog.module.css';
 import type { DocumentRecord } from '@/features/documents/Types';
 
 type DocumentDeleteDialogProps = {

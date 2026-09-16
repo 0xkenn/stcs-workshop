@@ -9,7 +9,6 @@
 }
 
 .cardHeadingRow,
-.selectedFile,
 .uploadStatus {
     display: flex;
     align-items: center;
@@ -20,7 +19,6 @@
 }
 
 .cardIcon,
-.selectedFileIcon,
 .dropZoneIcon {
     display: grid;
     flex: 0 0 auto;
@@ -49,16 +47,6 @@
     border-radius: 0.9rem;
     background: var(--document-muted-surface-hover);
     text-align: center;
-    transition:
-        border-color 160ms ease,
-        background-color 160ms ease,
-        transform 160ms ease;
-}
-
-.dropZoneActive {
-    border-color: var(--document-accent);
-    background: var(--document-accent-softer);
-    transform: translateY(-2px);
 }
 
 .dropZoneIcon {
@@ -107,42 +95,6 @@
     font-weight: 620;
 }
 
-.selectedFile {
-    gap: 0.75rem;
-    padding: 0.7rem;
-    border: 1px solid var(--document-border-soft);
-    border-radius: 0.75rem;
-    background: var(--document-surface-solid);
-}
-
-.selectedFileIcon {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 0.55rem;
-    background: var(--document-accent-softer);
-    color: var(--document-accent);
-}
-
-.selectedFileDetails {
-    display: grid;
-    min-width: 0;
-    flex: 1;
-    gap: 0.1rem;
-}
-
-.selectedFileDetails strong {
-    overflow: hidden;
-    color: var(--document-text-strong);
-    font-size: 0.78rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.selectedFileDetails span {
-    color: var(--document-text-muted);
-    font-size: 0.7rem;
-}
-
 .uploadButton {
     width: 100%;
     min-height: 2.5rem;
@@ -162,19 +114,9 @@
     font-size: 0.72rem;
 }
 
-.uploadError {
-    color: var(--document-danger);
-}
-
 @media (max-width: 56rem) {
     .uploadCard {
         position: static;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .dropZone {
-        transition: none;
     }
 }
 

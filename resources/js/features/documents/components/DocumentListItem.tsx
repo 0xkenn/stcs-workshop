@@ -7,8 +7,9 @@ import {
     formatFileSize,
     formatUploadDate,
 } from '@/features/documents/Formatters';
-import styles from '@/features/documents/styles/DocumentList.module.css';
+import styles from '@/features/documents/styles/DocumentListItem.module.css';
 import type { DocumentRecord } from '@/features/documents/Types';
+import { cn } from '@/lib/Utils';
 
 type DocumentListItemProps = {
     document: DocumentRecord;
@@ -16,13 +17,12 @@ type DocumentListItemProps = {
 
 export function DocumentListItem({ document }: DocumentListItemProps) {
     const DocumentIcon = getDocumentIcon(document.extension);
+    const iconColorClass = styles[`documentIcon${document.extension}`];
 
     return (
         <li className={styles.documentRow}>
             <div className={styles.documentIdentity}>
-                <div
-                    className={`${styles.documentIcon} ${styles[`documentIcon${document.extension}`] ?? ''}`}
-                >
+                <div className={cn(styles.documentIcon, iconColorClass)}>
                     <DocumentIcon size={19} aria-hidden="true" />
                 </div>
                 <div className={styles.documentName}>
